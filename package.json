@@ -27,7 +27,6 @@
     "should": "^9.0.2"
   },
   "dependencies": {
-    "bluebird": "^3.4.1",
-    "left-pad": "*"
+    "bluebird": "^3.4.1"
   }
 }
