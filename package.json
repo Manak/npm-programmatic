@@ -22,11 +22,11 @@
     "url": "https://github.com/Manak/npm-programmatic/issues"
   },
   "homepage": "https://github.com/Manak/npm-programmatic#readme",
-  "dependencies": {
-    "bluebird": "^3.4.1"
-  },
   "devDependencies": {
     "mocha": "^2.5.3",
     "should": "^9.0.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.1"
   }
 }

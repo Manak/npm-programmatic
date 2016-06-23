@@ -31,6 +31,31 @@ CWD refers to current working directory, allowing you to ensure the command exec
     });
 ```
 
+## Unistallation of Packages
+
+``` 
+    npm.uninstall(packages, opts).then(function)
+```
+| Name        | Type           | Value  |
+| ------------- |:-------------:| -----:|
+| packages      | Array      |   packages to be uninstalled |
+| opts      | Object | save:true/false; global:true/false; cwd:string; saveDev:true/false|
+
+### Example
+``` 
+    var npm = require('npm-programmatic');
+    npm.install(['left-pad'], {
+        cwd:'/path/to/my/project',
+        save:true
+    })
+    .then(function(){
+        console.log("SUCCESS!!!");
+    })
+    .catch(function(){
+        console.log("Unable to uninstall package");
+    });
+```
+
 
 ## Tests
 install mocha and dev dependencies. Then run 
