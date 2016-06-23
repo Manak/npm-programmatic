@@ -7,17 +7,17 @@ module.exports = {
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
 		var cmdString = "npm install " + packages.join(" ") + " "
-						+ (opts.global ? " -g":"")
-						+ (opts.save   ? " --save":"")
-						+ (opts.saveDev? " --saveDev":"");
+		+ (opts.global ? " -g":"")
+		+ (opts.save   ? " --save":"")
+		+ (opts.saveDev? " --saveDev":"");
 
 		return new Promise(function(resolve, reject){
 			exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
-			  if (error) {
-			  	reject(error);
-			  } else {
-			  	resolve(true);
-			  }
+				if (error) {
+					reject(error);
+				} else {
+					resolve(true);
+				}
 			});
 		});
 	},
@@ -27,17 +27,17 @@ module.exports = {
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
 		var cmdString = "npm uninstall " + packages.join(" ") + " "
-						+ (opts.global ? " -g":"")
-						+ (opts.save   ? " --save":"")
-						+ (opts.saveDev? " --saveDev":"");
+		+ (opts.global ? " -g":"")
+		+ (opts.save   ? " --save":"")
+		+ (opts.saveDev? " --saveDev":"");
 
 		return new Promise(function(resolve, reject){
 			exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
-			  if (error) {
-			  	reject(error);
-			  } else {
-			  	resolve(true);
-			  }
+				if (error) {
+					reject(error);
+				} else {
+					resolve(true);
+				}
 			});
 		});
 	},
@@ -48,30 +48,30 @@ module.exports = {
 		var cmdString = "npm ls --depth=0 " + (global?"-g ":" ");
 		return new Promise(function(resolve, reject){
 			exec(cmdString, {cwd: path?path:"/"},(error, stdout, stderr) => {
-			  if (error) {
-			  	reject(error, stderr);
-			  } else {
-			  	var packages = [];
-			  	packages = stdout.split('\n');
-			  	packages = packages.filter(function(item){
-			  		if(item.match(/^├──.+/g) != null){
-			  			return true
-			  		}
-			  		if(item.match(/^└──.+/g) != null){
-			  			return true			  		
-			  		}
-			  		return undefined;
-			  	});
-			  	packages = packages.map(function(item){
-			  		if(item.match(/^├──.+/g) != null){
-			  			return item.replace(/^├──\s/g, "");
-			  		}
-			  		if(item.match(/^└──.+/g) != null){
-			  			return item.replace(/^└──\s/g, "");
-			  		}
-			  	})
-			  	resolve(packages);
-			  }
+				if (stderr.indexOf("missing")== -1 && stderr.indexOf("required") == -1) {
+					reject(error);
+				}
+				var packages = [];
+				packages = stdout.split('\n');
+				packages = packages.filter(function(item){
+					if(item.match(/^├──.+/g) != null){
+						return true
+					}
+					if(item.match(/^└──.+/g) != null){
+						return true			  		
+					}
+					return undefined;
+				});
+				packages = packages.map(function(item){
+					if(item.match(/^├──.+/g) != null){
+						return item.replace(/^├──\s/g, "");
+					}
+					if(item.match(/^└──.+/g) != null){
+						return item.replace(/^└──\s/g, "");
+					}
+				})
+				resolve(packages);
+
 			});
 		});
 	}
