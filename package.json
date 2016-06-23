@@ -1,6 +1,6 @@
 {
   "name": "npm-programmatic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Use NPM commands programmatically",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "bluebird": "^3.4.1",
-    "left-pad":"*"
+    "left-pad": "*"
   }
 }
