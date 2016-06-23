@@ -49,7 +49,7 @@ module.exports = {
 		return new Promise(function(resolve, reject){
 			exec(cmdString, {cwd: path?path:"/"},(error, stdout, stderr) => {
 			  if (error) {
-			  	reject(error);
+			  	reject(error, stderr);
 			  } else {
 			  	var packages = [];
 			  	packages = stdout.split('\n');

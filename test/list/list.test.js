@@ -12,5 +12,8 @@ describe("Test listing of installed packages", ()=>{
 			}
 			return done(new Error("bluebird not found!"));
 		})
+		.catch(function(err, stderr){
+			return done(err, stderr);
+		})
 	});
 });
