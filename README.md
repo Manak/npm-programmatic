@@ -57,6 +57,27 @@ CWD refers to current working directory, allowing you to ensure the command exec
 ```
 
 
+## List Installed Packages
+
+``` 
+    npm.list(path).then(function)
+```
+| Name        | Type           | Value  |
+| ------------- |:-------------:| -----:|
+| path      | String      |   path at which to look |
+
+### Example
+``` 
+    var npm = require('npm-programmatic');
+    npm.list('/path/to/project')
+    .then(function(arrayOfPackages){
+        console.log(arrayOfPackages);
+    })
+    .catch(function(){
+        console.log("Unable to uninstall package");
+    });
+```
+
 ## Tests
 install mocha and dev dependencies. Then run 
 ``` npm test    ```

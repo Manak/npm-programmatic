@@ -40,5 +40,39 @@ module.exports = {
 			  }
 			});
 		});
+	},
+
+	list:function(path){
+		var global = false;
+		if(!path) global = true;
+		var cmdString = "npm ls --depth=0 " + (global?"-g ":" ");
+		return new Promise(function(resolve, reject){
+			exec(cmdString, {cwd: path?path:"/"},(error, stdout, stderr) => {
+			  if (error) {
+			  	reject(error);
+			  } else {
+			  	var packages = [];
+			  	packages = stdout.split('\n');
+			  	packages = packages.filter(function(item){
+			  		if(item.match(/^├──.+/g) != null){
+			  			return true
+			  		}
+			  		if(item.match(/^└──.+/g) != null){
+			  			return true			  		
+			  		}
+			  		return undefined;
+			  	});
+			  	packages = packages.map(function(item){
+			  		if(item.match(/^├──.+/g) != null){
+			  			return item.replace(/^├──\s/g, "");
+			  		}
+			  		if(item.match(/^└──.+/g) != null){
+			  			return item.replace(/^└──\s/g, "");
+			  		}
+			  	})
+			  	resolve(packages);
+			  }
+			});
+		});
 	}
 }
