@@ -5,6 +5,7 @@ npm-programmatic is a library that allows you to access npm commands programmati
 ## Usage
 Every function returns a Bluebird promise.   
 CWD refers to current working directory, allowing you to ensure the command executes in a certain folder in the filesystem.
+If output is set, the output of npm will be shown in the console.
 
 ## Installation of Packages
 
@@ -14,7 +15,7 @@ CWD refers to current working directory, allowing you to ensure the command exec
 | Name        | Type           | Value  |
 | ------------- |:-------------:| -----:|
 | packages      | Array      |   packages to be installed |
-| opts      | Object | save:true/false; global:true/false; cwd:string; saveDev:true/false|
+| opts      | Object | save:true/false; global:true/false; cwd:string; saveDev:true/false; output:true/false|
 
 ### Example
 ``` 
@@ -39,7 +40,7 @@ CWD refers to current working directory, allowing you to ensure the command exec
 | Name        | Type           | Value  |
 | ------------- |:-------------:| -----:|
 | packages      | Array      |   packages to be uninstalled |
-| opts      | Object | save:true/false; global:true/false; cwd:string; saveDev:true/false|
+| opts      | Object | save:true/false; global:true/false; cwd:string; saveDev:true/false; output:true/false|
 
 ### Example
 ``` 
