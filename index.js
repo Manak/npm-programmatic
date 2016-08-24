@@ -12,13 +12,22 @@ module.exports = {
 		+ (opts.saveDev? " --saveDev":"");
 
 		return new Promise(function(resolve, reject){
-			exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
+			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
 				if (error) {
 					reject(error);
 				} else {
 					resolve(true);
 				}
 			});
+			
+			if(opts.output) {
+				var consoleOutput = function(msg) {
+					console.log('npm: ' + msg);
+				};
+				
+				cmd.stdout.on('data', consoleOutput);
+				cmd.stderr.on('data', consoleOutput);
+			}
 		});
 	},
 
@@ -32,13 +41,22 @@ module.exports = {
 		+ (opts.saveDev? " --saveDev":"");
 
 		return new Promise(function(resolve, reject){
-			exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
+			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
 				if (error) {
 					reject(error);
 				} else {
 					resolve(true);
 				}
 			});
+			
+			if(opts.output) {
+				var consoleOutput = function(msg) {
+					console.log('npm: ' + msg);
+				};
+				
+				cmd.stdout.on('data', consoleOutput);
+				cmd.stderr.on('data', consoleOutput);
+			}
 		});
 	},
 
