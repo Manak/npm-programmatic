@@ -1,5 +1,6 @@
 # npm-programmatic [![Build Status](https://travis-ci.org/Manak/npm-programmatic.svg?branch=master)](https://travis-ci.org/Manak/npm-programmatic)   
-[![NPM](https://nodei.co/npm/npm-programmatic.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/npm-programmatic/)
+[![NPM](https://nodei.co/npm/npm-programmatic.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/npm-programmatic/)    
+
 npm-programmatic is a library that allows you to access npm commands programmatically from javascript
 ## Usage
 Every function returns a Bluebird promise.   
