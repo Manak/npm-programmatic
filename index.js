@@ -2,6 +2,30 @@ const Promise = require('bluebird');
 const exec = require('child_process').exec;
 
 module.exports = {
+	execute: function( cmdString, options, callback ){
+		if ( callback !== undefined ){
+			callback = (error, stdout, stderr) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve(true);
+				}
+			}
+		}
+		
+		return new Promise(function(resolve, reject){
+			var cmd = exec(cmdString, options, callback);
+
+			if( options.output ) {
+				var consoleOutput = function(msg) {
+					console.log('npm: ' + msg);
+				};
+				
+				cmd.stdout.on('data', consoleOutput);
+				cmd.stderr.on('data', consoleOutput);
+			}
+		});
+	},
 	install: function(packages, opts){
 		if(packages.length == 0 || !packages || !packages.length){Promise.reject("No packages found");}
 		if(typeof packages == "string") packages = [packages];
@@ -11,24 +35,7 @@ module.exports = {
 		+ (opts.save   ? " --save":"")
 		+ (opts.saveDev? " --saveDev":"");
 
-		return new Promise(function(resolve, reject){
-			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(true);
-				}
-			});
-			
-			if(opts.output) {
-				var consoleOutput = function(msg) {
-					console.log('npm: ' + msg);
-				};
-				
-				cmd.stdout.on('data', consoleOutput);
-				cmd.stderr.on('data', consoleOutput);
-			}
-		});
+		return this.execute( cmdString, {cwd: opts.cwd?opts.cwd:"/", output: opts.output} );
 	},
 
 	uninstall: function(packages, opts){
@@ -40,57 +47,39 @@ module.exports = {
 		+ (opts.save   ? " --save":"")
 		+ (opts.saveDev? " --saveDev":"");
 
-		return new Promise(function(resolve, reject){
-			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(true);
-				}
-			});
-			
-			if(opts.output) {
-				var consoleOutput = function(msg) {
-					console.log('npm: ' + msg);
-				};
-				
-				cmd.stdout.on('data', consoleOutput);
-				cmd.stderr.on('data', consoleOutput);
-			}
-		});
+		return return this.execute( cmdString, {cwd: opts.cwd?opts.cwd:"/", output: opts.output} );
 	},
 
 	list:function(path){
 		var global = false;
 		if(!path) global = true;
 		var cmdString = "npm ls --depth=0 " + (global?"-g ":" ");
-		return new Promise(function(resolve, reject){
-			exec(cmdString, {cwd: path?path:"/"},(error, stdout, stderr) => {
-				if (stderr.indexOf("missing")== -1 && stderr.indexOf("required") == -1) {
-					reject(error);
+		return this.execute( cmdString, {cwd: path?path:"/"}, (error, stdout, stderr) => {
+			if (stderr.indexOf("missing")== -1 && stderr.indexOf("required") == -1) {
+				reject(error);
+			}
+			var packages = [];
+			packages = stdout.split('\n');
+			packages = packages.filter(function(item){
+				if(item.match(/^├──.+/g) != null){
+					return true
 				}
-				var packages = [];
-				packages = stdout.split('\n');
-				packages = packages.filter(function(item){
-					if(item.match(/^├──.+/g) != null){
-						return true
-					}
-					if(item.match(/^└──.+/g) != null){
-						return true			  		
-					}
-					return undefined;
-				});
-				packages = packages.map(function(item){
-					if(item.match(/^├──.+/g) != null){
-						return item.replace(/^├──\s/g, "");
-					}
-					if(item.match(/^└──.+/g) != null){
-						return item.replace(/^└──\s/g, "");
-					}
-				})
-				resolve(packages);
-
+				if(item.match(/^└──.+/g) != null){
+					return true			  		
+				}
+				return undefined;
 			});
+			packages = packages.map(function(item){
+				if(item.match(/^├──.+/g) != null){
+					return item.replace(/^├──\s/g, "");
+				}
+				if(item.match(/^└──.+/g) != null){
+					return item.replace(/^└──\s/g, "");
+				}
+			})
+			resolve(packages);
+
 		});
+
 	}
 }
