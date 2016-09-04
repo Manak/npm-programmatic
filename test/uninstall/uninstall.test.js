@@ -23,35 +23,23 @@ describe("Test uninstallation of packages", ()=>{
 	});
 	
 
-	it("should uninstall package", function(done){
+	it("should uninstall package", function() {
 		this.timeout(5000);
-		npm.uninstall('bluebird', {cwd:"."})
-		.then(function(status){
+		return npm.uninstall('bluebird', {cwd:"."}).then(() => {
 			expect(dir('node_modules/bluebird')).to.not.exist;
-			done();
-		})
-		.catch(function(err){
-			done(err);
 		});
 	});
 
-	it("should uninstall package inside a node project and save it to package.json", function(done){
+	it("should uninstall package inside a node project and save it to package.json", function() {
 		this.timeout(5000);
-		npm.uninstall('bluebird', {cwd:'.', save:true}).then(()=>{
+		return npm.uninstall('bluebird', {cwd:'.', save:true}).then(() => {
 			expect(dir('node_modules/bluebird')).to.not.exist;
 
-			try{
-				var contents = fs.readFileSync('./package.json','UTF-8');
-				contents = JSON.parse(contents);
-				if(contents.dependencies['bluebird']){
-					return done(new Error());
-				}
-				done();
-			} catch(err){
-				return done();
+			var contents = fs.readFileSync('./package.json','UTF-8');
+			contents = JSON.parse(contents);
+			if(contents.dependencies['bluebird']){
+				throw new Error();
 			}
-		}).catch((err)=>{
-			return done(err);
 		});
 	});
 

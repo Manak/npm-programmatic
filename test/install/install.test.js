@@ -18,34 +18,23 @@ describe("Test installation of packages", ()=>{
 		child = exec('rm -rf ./node_modules/left-pad',function(err,out) {});
 		child = exec('cp ./test/backup/package.json ./package.json' ,function(err,out) {});
 	});
-	it("should install package", function(done){
+
+	it("should install package", function() {
 		this.timeout(5000);
-		npm.install(["left-pad"], {cwd:'.'}).then((result)=>{
+		return npm.install(["left-pad"], {cwd:'.'}).then(() => {
 			expect(dir('node_modules/left-pad')).to.exist;
-			done();
-		}).catch((err)=>{
-			return done(err)
 		});
 	});
 
-	it("should install package inside a node project and save it to package.json", function(done){
+	it("should install package inside a node project and save it to package.json", function() {
 		this.timeout(5000);
-		npm.install(["left-pad"], {cwd:'.', save:true}).then((result)=>{
+		npm.install(["left-pad"], {cwd:'.', save:true}).then(() => {
 			expect(dir('node_modules/left-pad')).to.exist;
 
-			try{
-				var contents = require('../../package.json');
-				if(!contents.dependencies['left-pad']){
-					throw new Error();
-				}
-			} catch(err){
-				return done(err);
+			var contents = require('../../package.json');
+			if(!contents.dependencies['left-pad']){
+				throw new Error();
 			}
-
-			return done();
-			
-		}).catch((err)=>{
-			return done(err);
 		});
 	});
 });
