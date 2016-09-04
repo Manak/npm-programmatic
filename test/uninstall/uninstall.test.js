@@ -1,6 +1,13 @@
 var npm = require("../../index");
 var fs = require("fs");
 var exec = require('child_process').exec,child;
+var chai = require('chai');
+var chaiFiles = require('chai-files');
+
+chai.use(chaiFiles);
+
+var expect = chai.expect;
+var dir = chaiFiles.dir;
 
 describe("Test uninstallation of packages", ()=>{
 	beforeEach(()=>{
@@ -20,12 +27,8 @@ describe("Test uninstallation of packages", ()=>{
 		this.timeout(5000);
 		npm.uninstall('bluebird', {cwd:"."})
 		.then(function(status){
-			try{
-				var checkExists = fs.accessSync('./node_modules/bluebird');
-			} catch(err){
-				return done();
-			}
-			return done(new Error("Uninstallation failed, package still exists in node_modules."));
+			expect(dir('node_modules/bluebird')).to.not.exist;
+			done();
 		})
 		.catch(function(err){
 			done(err);
@@ -35,13 +38,15 @@ describe("Test uninstallation of packages", ()=>{
 	it("should uninstall package inside a node project and save it to package.json", function(done){
 		this.timeout(5000);
 		npm.uninstall('bluebird', {cwd:'.', save:true}).then(()=>{
+			expect(dir('node_modules/bluebird')).to.not.exist;
+
 			try{
 				var contents = fs.readFileSync('./package.json','UTF-8');
 				contents = JSON.parse(contents);
-				if(!contents.dependencies['bluebird']){
-					var checkExists = fs.accessSync('./node_modules/bluebird');
+				if(contents.dependencies['bluebird']){
 					return done(new Error());
 				}
+				done();
 			} catch(err){
 				return done();
 			}

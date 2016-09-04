@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/Manak/npm-programmatic#readme",
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-files": "^1.4.0",
     "mocha": "^3.0.2"
   },
   "dependencies": {

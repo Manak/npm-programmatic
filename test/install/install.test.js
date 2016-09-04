@@ -1,6 +1,13 @@
 var npm = require("../../index");
 var fs = require("fs");
 var exec = require('child_process').exec,child;
+var chai = require('chai');
+var chaiFiles = require('chai-files');
+
+chai.use(chaiFiles);
+
+var expect = chai.expect;
+var dir = chaiFiles.dir;
 
 describe("Test installation of packages", ()=>{
 	beforeEach(()=>{
@@ -14,12 +21,8 @@ describe("Test installation of packages", ()=>{
 	it("should install package", function(done){
 		this.timeout(5000);
 		npm.install(["left-pad"], {cwd:'.'}).then((result)=>{
-			try{
-				var checkExists = fs.accessSync('./node_modules/left-pad');
-			} catch(err){
-				return done(err);
-			}
-			return done();
+			expect(dir('node_modules/left-pad')).to.exist;
+			done();
 		}).catch((err)=>{
 			return done(err)
 		});
@@ -28,8 +31,9 @@ describe("Test installation of packages", ()=>{
 	it("should install package inside a node project and save it to package.json", function(done){
 		this.timeout(5000);
 		npm.install(["left-pad"], {cwd:'.', save:true}).then((result)=>{
+			expect(dir('node_modules/left-pad')).to.exist;
+
 			try{
-				var checkExists = fs.accessSync('./node_modules/left-pad');
 				var contents = require('../../package.json');
 				if(!contents.dependencies['left-pad']){
 					throw new Error();
