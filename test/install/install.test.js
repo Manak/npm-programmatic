@@ -32,9 +32,7 @@ describe("Test installation of packages", ()=>{
 			expect(dir('node_modules/left-pad')).to.exist;
 
 			var contents = require('../../package.json');
-			if(!contents.dependencies['left-pad']){
-				throw new Error();
-			}
+			expect(contents.dependencies).to.have.property('left-pad');
 		});
 	});
 });

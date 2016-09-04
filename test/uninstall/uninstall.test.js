@@ -37,9 +37,7 @@ describe("Test uninstallation of packages", ()=>{
 
 			var contents = fs.readFileSync('./package.json','UTF-8');
 			contents = JSON.parse(contents);
-			if(contents.dependencies['bluebird']){
-				throw new Error();
-			}
+			expect(contents.dependencies).to.not.have.property('bluebird');
 		});
 	});
 
