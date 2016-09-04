@@ -1,6 +1,5 @@
 var npm = require("../../index");
 var fs = require("fs");
-var should = require("should");
 var exec = require('child_process').exec,child;
 
 describe("Test uninstallation of packages", ()=>{
