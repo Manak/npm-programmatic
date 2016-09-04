@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Manak/npm-programmatic#readme",
   "devDependencies": {
-    "mocha": "^2.5.3"
+    "mocha": "^3.0.2"
   },
   "dependencies": {
     "bluebird": "^3.4.1"
