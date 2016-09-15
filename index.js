@@ -66,8 +66,10 @@ module.exports = {
 		var cmdString = "npm ls --depth=0 " + (global?"-g ":" ");
 		return new Promise(function(resolve, reject){
 			exec(cmdString, {cwd: path?path:"/"},(error, stdout, stderr) => {
-				if (stderr.indexOf("missing")== -1 && stderr.indexOf("required") == -1) {
-					reject(error);
+				if(stderr == ""){
+					if (stderr.indexOf("missing")== -1 && stderr.indexOf("required") == -1) {
+						return reject(error);
+					}
 				}
 				var packages = [];
 				packages = stdout.split('\n');
