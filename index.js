@@ -9,7 +9,8 @@ module.exports = {
 		var cmdString = "npm install " + packages.join(" ") + " "
 		+ (opts.global ? " -g":"")
 		+ (opts.save   ? " --save":"")
-		+ (opts.saveDev? " --saveDev":"");
+		+ (opts.saveDev? " --saveDev":"")
+		+ (opts.ignoreScripts? " --ignore-scripts":"");
 
 		return new Promise(function(resolve, reject){
 			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
