@@ -20,12 +20,12 @@ module.exports = {
 					resolve(true);
 				}
 			});
-			
+
 			if(opts.output) {
 				var consoleOutput = function(msg) {
 					console.log('npm: ' + msg);
 				};
-				
+
 				cmd.stdout.on('data', consoleOutput);
 				cmd.stderr.on('data', consoleOutput);
 			}
@@ -49,12 +49,12 @@ module.exports = {
 					resolve(true);
 				}
 			});
-			
+
 			if(opts.output) {
 				var consoleOutput = function(msg) {
 					console.log('npm: ' + msg);
 				};
-				
+
 				cmd.stdout.on('data', consoleOutput);
 				cmd.stderr.on('data', consoleOutput);
 			}
@@ -79,7 +79,7 @@ module.exports = {
 						return true
 					}
 					if(item.match(/^└──.+/g) != null){
-						return true			  		
+						return true
 					}
 					return undefined;
 				});
@@ -93,6 +93,42 @@ module.exports = {
 				})
 				resolve(packages);
 
+			});
+		});
+	},
+
+	search: (searchString) => {
+		return new Promise((resolve, reject) => {
+			if((typeof searchString !== 'string') || (searchString === '')){
+				return reject(new Error('Search string must be a string and not empty!'));
+			}
+			var cmdString = `npm search -l ${searchString}`;
+			exec(cmdString, (err, data) => {
+				if(err) return reject(err);
+				data = data.match(/[^\r\n]+/g);
+				var header = data.shift();
+				var dataList = data.map((line) =>{
+					line = line.split('');
+					return {
+						name: line.splice(0, header.match(/(NAME *)/g)[0].length).join('').trim(),
+						description: line.splice(0, header.match(/(DESCRIPTION *)/g)[0].length).join('').trim(),
+						author: line.splice(0, header.match(/(AUTHOR *)/g)[0].length).join('').trim().replace(/=/g, '').split(' '),
+						date: line.splice(0, header.match(/(DATE *)/g)[0].length).join('').trim(),
+						version: line.splice(0, header.match(/(VERSION *)/g)[0].length).join('').trim(),
+						keywords: line.splice(0, header.match(/(KEYWORDS *)/g)[0].length).join('').trim().split(' '),
+					};
+				});
+				for(i = 0; i < dataList.length;) {
+					if(dataList[i].name == '' && i !== 0) {
+						dataList[i-1].description += ' ' + dataList[i].description;
+						dataList[i-1].author += dataList[i].author;
+						dataList[i-1].keywords += dataList[i].keywords;
+						dataList.splice(i, 1);
+					} else {
+						i++;
+					}
+					if(i == dataList.length - 1) return resolve(dataList);
+				}
 			});
 		});
 	}
