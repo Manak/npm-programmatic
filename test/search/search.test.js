@@ -5,7 +5,9 @@ describe("Test searching for packages", ()=>{
 		this.timeout(120000);
 		npm.search('left-pad')
 		.then(function(packages){
-			console.log(packages);
+			if(packages.length < 1){
+				return done(new Error('No packages found.'));
+			}
       return done();
 		})
 		.catch(function(err){
