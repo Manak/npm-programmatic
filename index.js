@@ -13,19 +13,19 @@ module.exports = {
 		+ (opts.ignoreScripts? " --ignore-scripts":"");
 
 		return new Promise(function(resolve, reject){
-			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
+			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/", maxBuffer: opts.maxBuffer?opts.maxBuffer:200 * 1024},(error, stdout, stderr) => {
 				if (error) {
 					reject(error);
 				} else {
 					resolve(true);
 				}
 			});
-			
+
 			if(opts.output) {
 				var consoleOutput = function(msg) {
 					console.log('npm: ' + msg);
 				};
-				
+
 				cmd.stdout.on('data', consoleOutput);
 				cmd.stderr.on('data', consoleOutput);
 			}
@@ -49,12 +49,12 @@ module.exports = {
 					resolve(true);
 				}
 			});
-			
+
 			if(opts.output) {
 				var consoleOutput = function(msg) {
 					console.log('npm: ' + msg);
 				};
-				
+
 				cmd.stdout.on('data', consoleOutput);
 				cmd.stderr.on('data', consoleOutput);
 			}
@@ -79,7 +79,7 @@ module.exports = {
 						return true
 					}
 					if(item.match(/^└──.+/g) != null){
-						return true			  		
+						return true
 					}
 					return undefined;
 				});
