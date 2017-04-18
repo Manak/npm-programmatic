@@ -45,7 +45,7 @@ If output is set, the output of npm will be shown in the console.
 ### Example
 ``` 
     var npm = require('npm-programmatic');
-    npm.install(['left-pad'], {
+    npm.uninstall(['left-pad'], {
         cwd:'/path/to/my/project',
         save:true
     })
