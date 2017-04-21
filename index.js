@@ -9,7 +9,7 @@ module.exports = {
 		var cmdString = "npm install " + packages.join(" ") + " "
 		+ (opts.global ? " -g":"")
 		+ (opts.save   ? " --save":"")
-		+ (opts.saveDev? " --saveDev":"")
+		+ (opts.saveDev? " --save-dev":"")
 		+ (opts.ignoreScripts? " --ignore-scripts":"");
 
 		return new Promise(function(resolve, reject){
