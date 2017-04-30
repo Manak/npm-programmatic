@@ -1,7 +1,13 @@
 var npm = require("../../index");
 var fs = require("fs");
-var should = require("should");
 var exec = require('child_process').exec,child;
+var chai = require('chai');
+var chaiFiles = require('chai-files');
+
+chai.use(chaiFiles);
+
+var expect = chai.expect;
+var dir = chaiFiles.dir;
 
 describe("Test installation of packages", ()=>{
 	beforeEach(()=>{
@@ -12,37 +18,21 @@ describe("Test installation of packages", ()=>{
 		child = exec('rm -rf ./node_modules/left-pad',function(err,out) {});
 		child = exec('cp ./test/backup/package.json ./package.json' ,function(err,out) {});
 	});
-	it("should install package", function(done){
+
+	it("should install package", function() {
 		this.timeout(5000);
-		npm.install(["left-pad"], {cwd:'.'}).then((result)=>{
-			try{
-				var checkExists = fs.accessSync('./node_modules/left-pad');
-			} catch(err){
-				return done(err);
-			}
-			return done();
-		}).catch((err)=>{
-			return done(err)
+		return npm.install(["left-pad"], {cwd:'.'}).then(() => {
+			expect(dir('node_modules/left-pad')).to.exist;
 		});
 	});
 
-	it("should install package inside a node project and save it to package.json", function(done){
+	it("should install package inside a node project and save it to package.json", function() {
 		this.timeout(5000);
-		npm.install(["left-pad"], {cwd:'.', save:true}).then((result)=>{
-			try{
-				var checkExists = fs.accessSync('./node_modules/left-pad');
-				var contents = require('../../package.json');
-				if(!contents.dependencies['left-pad']){
-					throw new Error();
-				}
-			} catch(err){
-				return done(err);
-			}
+		npm.install(["left-pad"], {cwd:'.', save:true}).then(() => {
+			expect(dir('node_modules/left-pad')).to.exist;
 
-			return done();
-			
-		}).catch((err)=>{
-			return done(err);
+			var contents = require('../../package.json');
+			expect(contents.dependencies).to.have.property('left-pad');
 		});
 	});
 });
