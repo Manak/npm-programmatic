@@ -10,6 +10,8 @@ module.exports = {
 		+ (opts.global ? " -g":"")
 		+ (opts.save   ? " --save":"")
 		+ (opts.saveDev? " --save-dev":"")
+		+ (opts.legacyBundling? " --legacy-bundling":"")
+		+ (opts.noOptional? " --no-optional":"")
 		+ (opts.ignoreScripts? " --ignore-scripts":"");
 
 		return new Promise(function(resolve, reject){
