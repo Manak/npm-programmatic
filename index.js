@@ -3,7 +3,7 @@ const exec = require('child_process').exec;
 
 module.exports = {
 	install: function(packages, opts){
-		if(packages.length == 0 || !packages || !packages.length){Promise.reject("No packages found");}
+		if(packages.length == 0 || !packages || !packages.length){return Promise.reject("No packages found");}
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
 		var cmdString = "npm install " + packages.join(" ") + " "
@@ -35,7 +35,7 @@ module.exports = {
 	},
 
 	uninstall: function(packages, opts){
-		if(packages.length == 0 || !packages || !packages.length){Promise.reject(new Error("No packages found"));}
+		if(packages.length == 0 || !packages || !packages.length){return Promise.reject(new Error("No packages found"));}
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
 		var cmdString = "npm uninstall " + packages.join(" ") + " "
