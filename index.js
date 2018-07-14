@@ -8,7 +8,7 @@ module.exports = {
 		if(!opts) opts = {};
 		var cmdString = "npm install " + packages.join(" ") + " "
 		+ (opts.global ? " -g":"")
-		+ (opts.save   ? " --save":"")
+		+ (opts.save   ? " --save":" --no-save")
 		+ (opts.saveDev? " --save-dev":"")
 		+ (opts.legacyBundling? " --legacy-bundling":"")
 		+ (opts.noOptional? " --no-optional":"")
@@ -40,7 +40,7 @@ module.exports = {
 		if(!opts) opts = {};
 		var cmdString = "npm uninstall " + packages.join(" ") + " "
 		+ (opts.global ? " -g":"")
-		+ (opts.save   ? " --save":"")
+		+ (opts.save   ? " --save":" --no-save")
 		+ (opts.saveDev? " --saveDev":"");
 
 		return new Promise(function(resolve, reject){
