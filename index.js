@@ -12,6 +12,7 @@ module.exports = {
 		+ (opts.saveDev? " --save-dev":"")
 		+ (opts.legacyBundling? " --legacy-bundling":"")
 		+ (opts.noOptional? " --no-optional":"")
+		+ (opts.saveExact? " --save-exact":"")
 		+ (opts.ignoreScripts? " --ignore-scripts":"");
 
 		return new Promise(function(resolve, reject){

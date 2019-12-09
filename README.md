@@ -15,7 +15,7 @@ If output is set, the output of npm will be shown in the console.
 | Name        | Type           | Value  |
 | ------------- |:-------------:| -----:|
 | packages      | Array      |   packages to be installed |
-| opts      | Object | save:true/false; global:true/false; cwd:string; saveDev:true/false; noOptional:true/false; legacyBundling: true/false; output:true/false|
+| opts      | Object | save:true/false; global:true/false; cwd:string; saveDev:true/false; noOptional:true/false; legacyBundling: true/false; output:true/false, saveExact:true/false|
 
 ### Example
 ``` 
