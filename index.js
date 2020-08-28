@@ -1,21 +1,15 @@
 const Promise = require('bluebird');
-const exec = require('child_process').exec;
+const exec = require('child_process').execFile;
 
 module.exports = {
 	install: function(packages, opts){
 		if(packages.length == 0 || !packages || !packages.length){return Promise.reject("No packages found");}
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
-		var cmdString = "npm install " + packages.join(" ") + " "
-		+ (opts.global ? " -g":"")
-		+ (opts.save   ? " --save":" --no-save")
-		+ (opts.saveDev? " --save-dev":"")
-		+ (opts.legacyBundling? " --legacy-bundling":"")
-		+ (opts.noOptional? " --no-optional":"")
-		+ (opts.ignoreScripts? " --ignore-scripts":"");
+		var cmdString = ["install",  packages.join(" "), (opts.global ? " -g":""), (opts.save   ? " --save":" --no-save"), (opts.saveDev? " --save-dev":""), (opts.legacyBundling? " --legacy-bundling":""), (opts.noOptional? " --no-optional":""), (opts.ignoreScripts? " --ignore-scripts":"")];
 
 		return new Promise(function(resolve, reject){
-			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/", maxBuffer: opts.maxBuffer?opts.maxBuffer:200 * 1024},(error, stdout, stderr) => {
+			var cmd = exec("npm", cmdString, {cwd: opts.cwd?opts.cwd:"/", maxBuffer: opts.maxBuffer?opts.maxBuffer:200 * 1024},(error, stdout, stderr) => {
 				if (error) {
 					reject(error);
 				} else {
@@ -38,13 +32,10 @@ module.exports = {
 		if(packages.length == 0 || !packages || !packages.length){return Promise.reject(new Error("No packages found"));}
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
-		var cmdString = "npm uninstall " + packages.join(" ") + " "
-		+ (opts.global ? " -g":"")
-		+ (opts.save   ? " --save":" --no-save")
-		+ (opts.saveDev? " --saveDev":"");
+		var cmdString = ["uninstall ", packages.join(" "), (opts.global ? " -g":""), (opts.save   ? " --save":" --no-save"), (opts.saveDev? " --saveDev":"")];
 
 		return new Promise(function(resolve, reject){
-			var cmd = exec(cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
+			var cmd = exec("npm", cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
 				if (error) {
 					reject(error);
 				} else {
@@ -66,9 +57,9 @@ module.exports = {
 	list:function(path){
 		var global = false;
 		if(!path) global = true;
-		var cmdString = "npm ls --depth=0 " + (global?"-g ":" ");
+		var cmdString = ["ls --depth=0 ", (global?"-g ":" ")];
 		return new Promise(function(resolve, reject){
-			exec(cmdString, {cwd: path?path:"/"},(error, stdout, stderr) => {
+			exec("npm", cmdString, {cwd: path?path:"/"},(error, stdout, stderr) => {
 				if(stderr !== ""){
 					if (stderr.indexOf("missing")== -1 && stderr.indexOf("required") == -1) {
 						return reject(error);
