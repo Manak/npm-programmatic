@@ -6,7 +6,16 @@ module.exports = {
 		if(packages.length == 0 || !packages || !packages.length){return Promise.reject("No packages found");}
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
-		var cmdString = ["install",  packages.join(" "), (opts.global ? " -g":""), (opts.save   ? " --save":" --no-save"), (opts.saveDev? " --save-dev":""), (opts.legacyBundling? " --legacy-bundling":""), (opts.noOptional? " --no-optional":""), (opts.ignoreScripts? " --ignore-scripts":"")];
+		var cmdString = [
+			"install",
+			packages.join(" "),
+			(opts.global ? " -g":""),
+			(opts.save   ? " --save":" --no-save"),
+			(opts.saveDev? " --save-dev":""),
+			(opts.legacyBundling? " --legacy-bundling":""),
+			(opts.noOptional? " --no-optional":""),
+			(opts.ignoreScripts? " --ignore-scripts":"")
+		];
 
 		return new Promise(function(resolve, reject){
 			var cmd = exec("npm", cmdString, {cwd: opts.cwd?opts.cwd:"/", maxBuffer: opts.maxBuffer?opts.maxBuffer:200 * 1024},(error, stdout, stderr) => {
@@ -32,7 +41,13 @@ module.exports = {
 		if(packages.length == 0 || !packages || !packages.length){return Promise.reject(new Error("No packages found"));}
 		if(typeof packages == "string") packages = [packages];
 		if(!opts) opts = {};
-		var cmdString = ["uninstall ", packages.join(" "), (opts.global ? " -g":""), (opts.save   ? " --save":" --no-save"), (opts.saveDev? " --saveDev":"")];
+		var cmdString = [
+			"uninstall",
+			packages.join(" "),
+			(opts.global ? " -g":""),
+			(opts.save   ? " --save":" --no-save"),
+			(opts.saveDev? " --saveDev":"")
+		];
 
 		return new Promise(function(resolve, reject){
 			var cmd = exec("npm", cmdString, {cwd: opts.cwd?opts.cwd:"/"},(error, stdout, stderr) => {
