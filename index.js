@@ -79,7 +79,7 @@ module.exports = {
 	list:function(path){
 		var global = false;
 		if(!path) global = true;
-		var cmdArgs = ["ls", "--depth=0"];
+		var cmdArgs = ["ls", "--depth=0", "--json"];
     global && cmdArgs.push("-g");
 		return new Promise(function(resolve, reject){
 			execFile(cmdFile, cmdArgs, {cwd: path?path:"/"},(error, stdout, stderr) => {
@@ -88,19 +88,7 @@ module.exports = {
 						return reject(error);
 					}
 				}
-				var packages = [];
-				packages = stdout.split('\n');
-				packages = packages.filter(function(item){
-					if(item.match(/^(\+|`)--.+/g) != null){
-						return true
-					}
-					return undefined;
-				});
-				packages = packages.map(function(item){
-					if(item.match(/^(\+|`)--\s.+/g) != null){
-						return item.replace(/^(\+|`)--\s/g, "");
-					}
-				})
+				const packages = Object.keys(JSON.parse(stdout).dependencies);
 				resolve(packages);
 
 			});
